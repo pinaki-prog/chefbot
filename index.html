@@ -2,8 +2,11 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="description" content="ChefBot – Your free AI-free kitchen companion. Get recipes, step-by-step cooking guidance, pantry matching, meal planning and quick fixes for common cooking disasters."/>
 <title>ChefBot – Your Kitchen Companion</title>
+<!-- Prevent dark-mode flash: read saved theme before first paint -->
+<script>try{var t=localStorage.getItem('cb_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/></noscript>
 <style>
@@ -205,6 +208,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .cook-progress-bar{height:3px;background:rgba(255,255,255,.1)}
 .cook-progress-fill{height:100%;background:var(--ambm);transition:width .3s}
 .cook-body{flex:1;overflow-y:auto;padding:28px 24px 20px;display:flex;flex-direction:column;gap:18px;max-width:700px;width:100%;margin:0 auto}
+@media(max-width:480px){.cook-body{padding:20px 16px 16px}.cook-header{padding:12px 14px}.cook-footer{padding:12px 14px;gap:8px}}
 .cook-step-num{font-size:12px;font-weight:500;opacity:.5;text-transform:uppercase;letter-spacing:.08em}
 .cook-step-text{font-size:22px;line-height:1.6;font-weight:400;color:#F5ECD9}
 .cook-timer-area{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -293,6 +297,35 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:4px}
 .hidden{display:none!important}
 
+/* ── FOCUS RINGS — never invisible for keyboard users ── */
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:var(--rs)}
+button:focus-visible,
+.chip:focus-visible,
+.qr-btn:focus-visible,
+.sb-btn:focus-visible,
+.r-btn:focus-visible,
+.rc-act-btn:focus-visible,
+.sc-btn:focus-visible,
+.fix-btn:focus-visible,
+.modal-btn:focus-visible,
+.cook-nav-btn:focus-visible,
+.cook-voice-btn:focus-visible,
+.cook-close:focus-visible,
+.cook-timer-btn:focus-visible,
+.cook-ingr-toggle:focus-visible,
+.s-timer:focus-visible,
+.live-match-pill:focus-visible,
+.mode-tab:focus-visible,
+.sb-tab:focus-visible,
+.pantry-grid-toggle:focus-visible,
+.plan-remove:focus-visible,
+.plan-pick-btn:focus-visible,
+.picker-item:focus-visible,
+.star:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.ingr-chip:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
+input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+a:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px}
+
 /* ── MOBILE ── */
 @media(max-width:600px){
   .sidebar{display:none}
@@ -323,6 +356,53 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
   .h-btn.hide-xs{display:none}
   .rc-actions{flex-direction:column;align-items:flex-start}
 }
+
+/* ── MOBILE FILTER BAR: single scrollable row ── */
+@media(max-width:600px){
+  .filter-bar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:9px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .filter-bar::-webkit-scrollbar{display:none}
+  .divv{display:block;flex-shrink:0}
+  .fl{display:none}
+}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mob-nav{display:none}
+@media(max-width:600px){
+  .mob-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;
+    background:var(--bg2);border-top:1px solid var(--brd2);
+    z-index:120;flex-shrink:0;
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .mob-nav-btn{
+    flex:1;padding:10px 4px 10px;border:none;background:none;
+    color:var(--txt3);font-size:10px;font-family:'DM Sans',sans-serif;
+    cursor:pointer;display:flex;flex-direction:column;align-items:center;
+    gap:3px;transition:color .15s;
+  }
+  .mob-nav-btn .mn-icon{font-size:18px;line-height:1}
+  .mob-nav-btn.active{color:var(--amber)}
+  .mob-nav-btn:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
+  /* push chat content up so it isn't hidden behind the nav bar + safe area */
+  .layout{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
+  .cook-overlay{padding-bottom:58px}
+}
+
+/* ── MOBILE BOTTOM SHEET ── */
+.mob-sheet-overlay{display:none;position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.45)}
+.mob-sheet{
+  position:fixed;bottom:0;left:0;right:0;z-index:131;
+  background:var(--bg3);border-radius:16px 16px 0 0;
+  border-top:1px solid var(--brd2);
+  max-height:75vh;overflow-y:auto;
+  padding:0 0 env(safe-area-inset-bottom,12px);
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.mob-sheet.open{transform:translateY(0)}
+.mob-sheet-overlay.open{display:block}
+.mob-sheet-handle{width:36px;height:4px;background:var(--brd2);border-radius:2px;margin:10px auto 6px}
+.mob-sheet-title{font-size:13px;font-weight:500;color:var(--txt2);padding:2px 16px 10px;border-bottom:1px solid var(--brd)}
+.mob-sheet-body{padding:10px 12px 16px;display:flex;flex-direction:column;gap:4px}
 </style>
 </head>
 <body>
@@ -452,7 +532,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
     </div>
   </div>
   <div class="input-row">
-    <textarea class="msg-input" id="chat-input" placeholder="Ask anything… recipe name, ingredient, or cooking question" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <textarea class="msg-input" id="chat-input" placeholder="Ask anything… recipe name, ingredient, or cooking question" rows="1" maxlength="500" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
     <button class="send-btn" onclick="handleSend()">↑</button>
   </div>
 </div>
@@ -516,6 +596,33 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- MOBILE BOTTOM NAV (visible only on small screens) -->
+<nav class="mob-nav" role="navigation" aria-label="Mobile navigation">
+  <button class="mob-nav-btn active" id="mn-chat" onclick="mobNav('chat')" aria-label="Chat">
+    <span class="mn-icon">💬</span><span>Chat</span>
+  </button>
+  <button class="mob-nav-btn" id="mn-fridge" onclick="mobNav('fridge')" aria-label="What's in my fridge">
+    <span class="mn-icon">🧊</span><span>Fridge</span>
+  </button>
+  <button class="mob-nav-btn" id="mn-fixes" onclick="mobSheet('fixes')" aria-label="Quick fixes">
+    <span class="mn-icon">🔧</span><span>Fixes</span>
+  </button>
+  <button class="mob-nav-btn" id="mn-plan" onclick="mobSheet('plan')" aria-label="Meal planner">
+    <span class="mn-icon">📅</span><span>Plan</span>
+  </button>
+  <button class="mob-nav-btn" id="mn-saved" onclick="mobSheet('saved')" aria-label="Saved recipes">
+    <span class="mn-icon">❤️</span><span>Saved</span>
+  </button>
+</nav>
+
+<!-- MOBILE BOTTOM SHEET -->
+<div class="mob-sheet-overlay" id="mob-sheet-overlay" onclick="closeMobSheet()"></div>
+<div class="mob-sheet" id="mob-sheet" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-title" id="mob-sheet-title"></div>
+  <div class="mob-sheet-body" id="mob-sheet-body"></div>
+</div>
 
 <script>
 /* ═══ DATA ═══════════════════════════════════════════ */
@@ -1009,7 +1116,10 @@ function renderSbFavs(){
 /* ═══ RATINGS ═══ */
 function setRating(id,stars){
   S.ratings[id]=stars;save();
-  document.querySelectorAll(`.stars[data-id="${id}"] .star`).forEach((el,i)=>el.classList.toggle('on',i<stars));
+  document.querySelectorAll(`.stars[data-id="${id}"] .star`).forEach((el,i)=>{
+    el.classList.toggle('on',i<stars);
+    el.setAttribute('aria-checked',i<stars?'true':'false');
+  });
   toast(`Rated ${stars} ⭐`);
 }
 
@@ -1140,7 +1250,7 @@ function toggleIngr(el,key){
 }
 
 function _getTypedTokens(val){
-  return val.split(/[,;\n]+/).map(s=>s.trim().toLowerCase()).filter(Boolean);
+  return val.split(/[,;\n]+/).map(s=>s.trim().toLowerCase()).filter(s=>s.length>=2);
 }
 
 function _recomputeSelected(val){
@@ -1203,14 +1313,14 @@ function updateLiveMatches(){
   const scored=RECIPES.map(r=>{
     let m=0;
     r.ingredients.forEach(([q,u,n])=>{
-      if(selected.some(s=>n.toLowerCase().includes(s)||s.includes(n.toLowerCase().split(' ')[0])))m++;
+      if(selected.some(s=>s.length>=2&&(n.toLowerCase().includes(s)||s.includes(n.toLowerCase().split(' ')[0]))))m++;
     });
     return{r,score:Math.round((m/r.ingredients.length)*100)};
   }).filter(x=>x.score>=25).sort((a,b)=>b.score-a.score).slice(0,5);
   if(!scored.length){bar.style.display='none';return;}
   bar.style.display='flex';
   bar.innerHTML=`<span style="color:var(--txt3);font-size:12px">Quick matches:</span>`+
-    scored.map(({r,score})=>`<span class="live-match-pill" onclick="renderRecipeCard(getRecipe('${r.id}'))">${r.name} <b>${score}%</b></span>`).join('');
+    scored.map(({r,score})=>`<span class="live-match-pill" role="button" tabindex="0" onclick="renderRecipeCard(getRecipe('${r.id}'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();renderRecipeCard(getRecipe('${r.id}'))}">${r.name} <b>${score}%</b></span>`).join('');
 }
 
 function clearPantryGrid(){
@@ -1234,7 +1344,7 @@ function findFromPantry(){
   const scored=RECIPES.map(r=>{
     let m=0;
     r.ingredients.forEach(([q,u,n])=>{
-      if(selected.some(s=>n.toLowerCase().includes(s)||s.includes(n.toLowerCase().split(' ')[0])))m++;
+      if(selected.some(s=>s.length>=2&&(n.toLowerCase().includes(s)||s.includes(n.toLowerCase().split(' ')[0]))))m++;
     });
     return{...r,score:Math.round((m/r.ingredients.length)*100)};
   }).filter(r=>r.score>0).sort((a,b)=>b.score-a.score);
@@ -1299,8 +1409,8 @@ function renderRecipeCard(r,servings){
   </div>`;
   html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
     <span style="font-size:12px;color:var(--txt3)">Your rating:</span>
-    <div class="stars" data-id="${r.id}">
-      ${[1,2,3,4,5].map(i=>`<span class="star ${i<=rating?'on':''}" onclick="setRating('${r.id}',${i})">★</span>`).join('')}
+    <div class="stars" data-id="${r.id}" role="radiogroup" aria-label="Rate this recipe">
+      ${[1,2,3,4,5].map(i=>`<span class="star ${i<=rating?'on':''}" role="radio" aria-label="${i} star${i>1?'s':''}" aria-checked="${i<=rating?'true':'false'}" tabindex="0" onclick="setRating('${r.id}',${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setRating('${r.id}',${i});}">★</span>`).join('')}
     </div>
   </div>`;
   html+=`<div class="section-lbl">Ingredients</div><div class="ingr-list">`;
@@ -1473,6 +1583,7 @@ function onGlobalKey(e){
   // Esc closes modals regardless of cook mode
   if(e.key==='Escape'){
     if(S.cook){exitCookMode();return;}
+    closeMobSheet();
     document.getElementById('planner-modal').classList.add('hidden');
     document.getElementById('shop-modal').classList.add('hidden');
     return;
@@ -1509,7 +1620,7 @@ function renderPlannerBody(){
 function renderPickerHTML(){
   const day=S.activePicker;
   if(!day)return'';
-  const items=RECIPES.map(r=>`<span class="picker-item" onclick="assignRecipe('${day}','${r.id}')">${r.name}</span>`).join('');
+  const items=RECIPES.map(r=>`<span class="picker-item" role="button" tabindex="0" onclick="assignRecipe('${day}','${r.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();assignRecipe('${day}','${r.id}');}">${r.name}</span>`).join('');
   return`<div class="plan-picker">
     <input placeholder="Search recipes…" oninput="filterPickerItems(this.value,'${day}')" autofocus/>
     <div class="picker-list" id="picker-list">${items}</div>
@@ -1520,7 +1631,7 @@ function filterPickerItems(q,day){
   const list=document.getElementById('picker-list');if(!list)return;
   const low=q.toLowerCase();
   const filtered=RECIPES.filter(r=>!q||r.name.toLowerCase().includes(low)||r.cuisine.toLowerCase().includes(low));
-  list.innerHTML=filtered.map(r=>`<span class="picker-item" onclick="assignRecipe('${day}','${r.id}')">${r.name}</span>`).join('');
+  list.innerHTML=filtered.map(r=>`<span class="picker-item" role="button" tabindex="0" onclick="assignRecipe('${day}','${r.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();assignRecipe('${day}','${r.id}');}">${r.name}</span>`).join('');
 }
 function openPicker(day){S.activePicker=S.activePicker===day?null:day;renderPlannerBody();}
 function assignRecipe(day,id){S.plan[day]=id;S.activePicker=null;save();renderPlannerBody();toast(`Added to ${day}!`);}
@@ -1549,7 +1660,8 @@ function showShoppingList(){
   const agg={};
   planned.forEach(r=>{
     r.ingredients.forEach(([q,u,n])=>{
-      const key=n.toLowerCase();
+      // Key on BOTH name and unit so "200g butter" and "2 tbsp butter" stay as separate lines
+      const key=`${n.toLowerCase()}||${u||''}`;
       if(!agg[key])agg[key]={q:0,u,n,cat:getCategory(n)};
       agg[key].q+=q;
     });
@@ -1595,7 +1707,8 @@ function printShoppingList(){
   const agg={};
   planned.forEach(r=>{
     r.ingredients.forEach(([q,u,n])=>{
-      const key=n.toLowerCase();
+      // Key on BOTH name and unit so "200g butter" and "2 tbsp butter" stay as separate lines
+      const key=`${n.toLowerCase()}||${u||''}`;
       if(!agg[key])agg[key]={q:0,u,n,cat:getCategory(n)};
       agg[key].q+=q;
     });
@@ -1603,7 +1716,7 @@ function printShoppingList(){
   const groups={};
   Object.values(agg).forEach(item=>{if(!groups[item.cat])groups[item.cat]=[];groups[item.cat].push(item);});
   const catOrder=['Produce','Meat & Fish','Dairy & Eggs','Grains & Bread','Pantry & Spices'];
-  let inner=`<h3>🛒 Shopping List</h3><p style="font-size:12px;color:#666;margin-bottom:10px">For: ${planned.map(r=>r.name).join(', ')}</p>`;
+  let inner=`<h3>🛒 Shopping List</h3><p style="font-size:12px;color:#555;margin-bottom:10px">For: ${planned.map(r=>r.name).join(', ')}</p>`;
   catOrder.forEach(cat=>{
     if(!groups[cat])return;
     inner+=`<div class="sp-cat">${cat}</div>`;
@@ -1752,6 +1865,105 @@ function handleSend(){
 }
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,88)+'px';}
-</script>
-</body>
-</html>
+/* ═══ MOBILE BOTTOM NAV ═══ */
+function mobNav(tab){
+  // Chat tab: switch to chat mode
+  // Fridge tab: switch to pantry mode
+  ['chat','fridge','fixes','plan','saved'].forEach(t=>{
+    const el=document.getElementById('mn-'+t);
+    if(el)el.classList.toggle('active',t===tab);
+  });
+  if(tab==='chat'){switchMode('chat');closeMobSheet();}
+  else if(tab==='fridge'){switchMode('pantry');closeMobSheet();}
+}
+
+const MOB_SHEET_CONTENT={
+  fixes:{
+    title:'🔧 Quick Fixes & Tips',
+    build(){
+      const fixes=[
+        {icon:'🧂',label:'Too salty',key:'salty'},
+        {icon:'🌶️',label:'Too spicy',key:'spicy'},
+        {icon:'😶',label:'Too bland',key:'bland'},
+        {icon:'🔥',label:'Burnt smell',key:'burnt'},
+        {icon:'🥣',label:'Too thick',key:'thick'},
+        {icon:'💧',label:'Too watery',key:'watery'},
+        {icon:'🍳',label:'Food sticking',key:'sticking'},
+        {icon:'🍝',label:'Overcooked',key:'mushy'},
+      ];
+      const tips=[
+        {icon:'🔪',label:'Knife skills',key:'knifeskills'},
+        {icon:'🥚',label:'Perfect eggs',key:'eggs'},
+        {icon:'🍝',label:'Perfect pasta',key:'pasta'},
+        {icon:'🍚',label:'Perfect rice',key:'rice'},
+        {icon:'🥩',label:'Searing meat',key:'sear'},
+        {icon:'🔄',label:'Substitutes',key:'substitutes'},
+      ];
+      let html='<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:2px 4px 6px;font-weight:500">Quick Fixes</div>';
+      fixes.forEach(f=>{
+        html+=`<button class="sb-btn" onclick="showFix('${f.key}');closeMobSheet()"><span class="sb-icon">${f.icon}</span>${f.label}</button>`;
+      });
+      html+='<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:10px 4px 6px;font-weight:500">Kitchen Tips</div>';
+      tips.forEach(t=>{
+        html+=`<button class="sb-btn grn" onclick="showTip('${t.key}');closeMobSheet()"><span class="sb-icon">${t.icon}</span>${t.label}</button>`;
+      });
+      return html;
+    }
+  },
+  plan:{
+    title:'📅 Meal Planner',
+    build(){
+      const assigned=DAYS.filter(d=>S.plan[d]);
+      let html='';
+      if(assigned.length){
+        html+='<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:2px 4px 8px;font-weight:500">This week</div>';
+        html+=assigned.map(d=>{
+          const r=getRecipe(S.plan[d]);
+          return`<div style="display:flex;justify-content:space-between;padding:6px 4px;border-bottom:1px solid var(--brd);font-size:13px"><b style="color:var(--txt3)">${d}</b><span>${r?r.name:'—'}</span></div>`;
+        }).join('');
+        html+='<div style="height:8px"></div>';
+      }
+      html+=`<button class="sb-btn" onclick="closeMobSheet();openPlanner()"><span class="sb-icon">📅</span>Open Full Planner</button>`;
+      html+=`<button class="sb-btn grn" onclick="closeMobSheet();showShoppingList()"><span class="sb-icon">🛒</span>Shopping List</button>`;
+      return html;
+    }
+  },
+  saved:{
+    title:'❤️ Saved Recipes',
+    build(){
+      if(!S.favs.length)return'<div style="font-size:13px;color:var(--txt3);padding:8px 4px;font-style:italic">No favourites yet. Heart a recipe to save it here!</div>';
+      return S.favs.map(id=>{
+        const r=getRecipe(id);if(!r)return'';
+        return`<button class="sb-btn" onclick="renderRecipeCard(getRecipe('${id}'));closeMobSheet()"><span class="sb-icon">❤️</span>${r.name}</button>`;
+      }).join('');
+    }
+  }
+};
+
+function mobSheet(tab){
+  const content=MOB_SHEET_CONTENT[tab];
+  if(!content)return;
+  // Update nav active state
+  ['chat','fridge','fixes','plan','saved'].forEach(t=>{
+    const el=document.getElementById('mn-'+t);
+    if(el)el.classList.toggle('active',t===tab);
+  });
+  document.getElementById('mob-sheet-title').textContent=content.title;
+  document.getElementById('mob-sheet-body').innerHTML=content.build();
+  document.getElementById('mob-sheet-overlay').classList.add('open');
+  document.getElementById('mob-sheet').classList.add('open');
+  document.getElementById('mob-sheet').setAttribute('aria-label',content.title);
+}
+
+function closeMobSheet(){
+  document.getElementById('mob-sheet-overlay').classList.remove('open');
+  document.getElementById('mob-sheet').classList.remove('open');
+  // Restore active nav based on current mode
+  ['chat','fridge','fixes','plan','saved'].forEach(t=>{
+    const el=document.getElementById('mn-'+t);
+    if(el)el.classList.toggle('active',
+      (t==='chat'&&S.mode==='chat')||(t==='fridge'&&S.mode==='pantry')
+    );
+  });
+}
+
