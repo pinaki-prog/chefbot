@@ -9,6 +9,7 @@
     "not safari <= 17.5"
   ],
   "hints": {
-    "no-inline-styles": "off"
+    "no-inline-styles": "off",
+    "compat-api/css": "off"
   }
 }
