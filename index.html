@@ -593,13 +593,13 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:
   </div>
 </div>
 
-<!-- PRINT AREA (fixed position, only shown when printing) -->
+<!-- PRINT AREA -->
 <div class="print-only" id="print-area"></div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- MOBILE BOTTOM NAV (visible only on small screens) -->
+<!-- MOBILE BOTTOM NAV  -->
 <nav class="mob-nav" role="navigation" aria-label="Mobile navigation">
   <button class="mob-nav-btn active" id="mn-chat" onclick="mobNav('chat')" aria-label="Chat">
     <span class="mn-icon">💬</span><span>Chat</span>
@@ -627,7 +627,7 @@ a:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:
 </div>
 
 <script>
-/* ═══ DATA ═══════════════════════════════════════════ */
+/* DATA */
 const RECIPES=[
   {id:'carbonara',name:'Spaghetti Carbonara',cuisine:'Italian',diet:[],time:'25 min',difficulty:'Medium',
    baseServings:2,
@@ -880,7 +880,7 @@ const KITCHEN_TIPS={
   substitutes:{title:'🔄 Common Ingredient Substitutes',tips:['No butter: equal amount of coconut oil, or ¾ the amount of vegetable oil.','No eggs (baking): 3 tbsp aquafaba, or 1 tbsp ground flax + 3 tbsp water.','No buttermilk: milk + 1 tbsp lemon juice or vinegar. Wait 5 minutes.','No cream: coconut cream, or evaporated milk in savoury dishes.','No fresh herbs: use ⅓ the amount of dried — they\'re more concentrated.','No breadcrumbs: crushed crackers, rolled oats, or ground almonds.']}
 };
 
-/* ═══ INGREDIENT GRID DATA ═══ */
+/* INGREDIENT GRID DATA */
 const INGR_GRID={
   '🥬 Produce':['garlic','onion','tomato','bell pepper','broccoli','carrot','cucumber','spinach','avocado','lemon','lime','mushrooms','potato','sweet potato','zucchini','celery','ginger','jalapeño','spring onion','lettuce','cabbage','eggplant','peas','corn','basil','cilantro','parsley','chili'],
   '🥩 Meat & Fish':['chicken breast','chicken thighs','ground beef','steak','bacon','eggs','prawns / shrimp','salmon','tuna','pork chops','lamb','sausage','ham'],
@@ -931,7 +931,7 @@ function getCategory(name){
   return 'Pantry & Spices';
 }
 
-/* ═══ SECURITY ═══ */
+/* SECURITY */
 function escHtml(str){
   return String(str)
     .replace(/&/g,'&amp;')
@@ -941,7 +941,7 @@ function escHtml(str){
     .replace(/'/g,'&#39;');
 }
 
-/* ═══ SAFE LOCALSTORAGE ═══ */
+/* SAFE LOCALSTORAGE */
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}catch(e){}}
 function lsParse(k,fallback){
@@ -949,7 +949,7 @@ function lsParse(k,fallback){
   catch(e){return fallback;}
 }
 
-/* ═══ STATE ═══ */
+/* STATE */
 const S={
   theme:lsGet('cb_theme')||'light',
   cuisine:lsGet('cb_cuisine')||'Any',
@@ -978,7 +978,7 @@ function save(){
   lsSet('cb_streak',JSON.stringify(S.streak));lsSet('cb_plan',JSON.stringify(S.plan));
 }
 
-/* ═══ HELPERS ═══ */
+/* HELPERS */
 function fmtQty(q,m){const v=q*m;if(v===0)return 0;if(v<1)return Math.round(v*10)/10;if(Number.isInteger(v))return v;return Math.round(v*4)/4;}
 function dispIngr([q,u,n],m=1){return`${fmtQty(q,m)}${u?' '+u:''} ${n}`;}
 function getFiltered(){
@@ -997,7 +997,7 @@ function toast(msg){
   clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2800);
 }
 
-/* ═══ INIT ═══ */
+/*  INIT  */
 window.addEventListener('DOMContentLoaded',()=>{
   applyTheme(S.theme);
   initFilters();
@@ -1016,14 +1016,14 @@ function initFilters(){
   });
 }
 
-/* ═══ THEME ═══ */
+/* THEME */
 function toggleTheme(){S.theme=S.theme==='light'?'dark':'light';applyTheme(S.theme);save();}
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('theme-btn').textContent=t==='dark'?'☀️ Light':'🌙 Dark';
 }
 
-/* ═══ FILTERS ═══ */
+/* FILTERS */
 function setFilter(el){
   const t=el.dataset.t,v=el.dataset.v;
   const cls=t==='c'?'on-c':t==='d'?'on-d':'on-f';
@@ -1033,7 +1033,7 @@ function setFilter(el){
   save();
 }
 
-/* ═══ SEARCH ═══ */
+/* SEARCH */
 let _searchTimer=null;
 function onSearch(q){
   clearTimeout(_searchTimer);
@@ -1062,7 +1062,7 @@ function searchSelect(id){
   renderRecipeCard(getRecipe(id));
 }
 
-/* ═══ SURPRISE ═══ */
+/* SURPRISE */
 function surpriseMe(){
   const pool=getFiltered();
   if(!pool.length){addBotBubble('<div>No recipes match your current filters. Try clearing the cuisine or diet filter!</div>');return;}
@@ -1070,7 +1070,7 @@ function surpriseMe(){
   renderRecipeCard(pool[Math.floor(Math.random()*pool.length)]);
 }
 
-/* ═══ STREAK ═══ */
+/* STREAK */
 function renderStreakBadge(){document.getElementById('streak-btn').textContent=`🔥 ${S.streak.count} day${S.streak.count!==1?'s':''}`;}
 function showStreak(){
   const msg=S.streak.count===0
@@ -1093,7 +1093,7 @@ function markCooked(id){
   addBotBubble(`<div>🎉 <b>Well done!</b> You cooked <b>${r.name}</b>!<br><span style="font-size:12px;color:var(--txt3)">Streak: ${S.streak.count} day${S.streak.count!==1?'s':''} · Total cooked: ${S.cooked.length}</span></div>`);
 }
 
-/* ═══ FAVOURITES ═══ */
+/* FAVOURITES */
 function toggleFav(id){
   const idx=S.favs.indexOf(id);
   const nowSaved=idx<0; // if it wasn't saved before, it will be now
@@ -1115,7 +1115,7 @@ function renderSbFavs(){
   }).join('');
 }
 
-/* ═══ RATINGS ═══ */
+/* RATINGS */
 function setRating(id,stars){
   S.ratings[id]=stars;save();
   document.querySelectorAll(`.stars[data-id="${id}"] .star`).forEach((el,i)=>{
@@ -1125,14 +1125,14 @@ function setRating(id,stars){
   toast(`Rated ${stars} ⭐`);
 }
 
-/* ═══ NOTES ═══ */
+/* NOTES */
 let _noteTimer=null;
 function saveNote(id,text){
   clearTimeout(_noteTimer);
   _noteTimer=setTimeout(()=>{S.notes[id]=text;save();},600);
 }
 
-/* ═══ TIMERS ═══ */
+/* TIMERS */
 function addTimer(label,minutes){
   const id='t'+Date.now();
   S.timers.push({id,label,total:minutes*60,remaining:minutes*60,running:false,done:false});
@@ -1174,7 +1174,7 @@ function renderTimers(){
     </span>`).join('');
 }
 
-/* ═══ SERVING SCALER ═══ */
+/* SERVING SCALER */
 function setServings(cardEl,id,newS,baseS){
   newS=parseInt(newS);
   if(!newS||newS<1||newS>50)return;
@@ -1189,7 +1189,7 @@ function setServings(cardEl,id,newS,baseS){
   cardEl.dataset.servings=newS;
 }
 
-/* ═══ PANTRY / FRIDGE GRID ═══ */
+/* PANTRY / FRIDGE GRID */
 function switchMode(mode){
   S.mode=mode;
   document.getElementById('mtab-chat').classList.toggle('active',mode==='chat');
@@ -1222,8 +1222,6 @@ function toggleIngrGrid(){
   hint.textContent=S.gridOpen?'':'Click what you have';
 }
 
-// Track which keys were added via grid clicks vs typed manually
-// so the two sources never stomp on each other
 const _gridSelected=new Set(); // keys added by clicking grid chips
 
 function toggleIngr(el,key){
@@ -1238,14 +1236,14 @@ function toggleIngr(el,key){
     el.classList.add('sel');
     el.setAttribute('aria-checked','true');
   }
-  // Rebuild text input = typed portion (preserve) + grid additions
+  
   const input=document.getElementById('pantry-input');
   const typedTokens=_getTypedTokens(input.value);
   // Append grid items that aren't already in the typed text
   const gridExtra=[..._gridSelected].filter(k=>!typedTokens.some(t=>k.includes(t)||t.includes(k.split(' ')[0])));
   const combined=[...new Set([...typedTokens,...gridExtra])];
   input.value=combined.join(', ');
-  // Recompute full selected set
+  
   _recomputeSelected(input.value);
   updatePantryStatus();
   debounceLiveMatches();
@@ -1256,13 +1254,13 @@ function _getTypedTokens(val){
 }
 
 function _recomputeSelected(val){
-  // Rebuild S.pantrySelected from scratch based on current input value
+  
   const tokens=_getTypedTokens(val);
   S.pantrySelected.clear();
   tokens.forEach(t=>S.pantrySelected.add(t));
-  // Also keep grid-clicked ones that are still checked
+  
   _gridSelected.forEach(k=>S.pantrySelected.add(k));
-  // Sync chip visual state and aria-checked
+
   document.querySelectorAll('.ingr-chip').forEach(el=>{
     const k=el.dataset.ingr;
     const matchesTyped=tokens.some(t=>k.includes(t)||t.includes(k.split(' ')[0]));
@@ -1275,7 +1273,7 @@ function _recomputeSelected(val){
 
 function onPantryType(){
   const val=document.getElementById('pantry-input').value;
-  // When user backspaces, remove grid items that no longer appear in the text
+  
   const tokens=_getTypedTokens(val);
   _gridSelected.forEach(k=>{
     const stillPresent=tokens.some(t=>k.includes(t)||t.includes(k.split(' ')[0]));
@@ -1362,7 +1360,7 @@ function findFromPantry(){
   addBotBubble(html);
 }
 
-/* ═══ SIDEBAR TABS ═══ */
+/* SIDEBAR TABS */
 function sbTab(tab){
   ['fixes','plan','saved'].forEach(t=>{
     document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
@@ -1372,7 +1370,7 @@ function sbTab(tab){
   if(tab==='plan')renderPlanMini();
 }
 
-/* ═══ RECIPE CARD ═══ */
+/* RECIPE CARD */
 function renderRecipeCard(r,servings){
   if(!r)return;
   document.getElementById('empty-state')?.remove();
@@ -1443,7 +1441,7 @@ function renderRecipeCard(r,servings){
   addBotBubble(html);
 }
 
-/* ═══ COOK MODE ═══ */
+/* COOK MODE */
 function enterCookMode(id,servings){
   const r=getRecipe(id);if(!r)return;
   S.cook={recipe:r,step:0,servings:servings||r.baseServings,voiceOn:false,ingrVisible:false,cookTimer:null,cookTimerInterval:null,cookTimerRunning:false};
@@ -1590,7 +1588,7 @@ function onGlobalKey(e){
     document.getElementById('shop-modal').classList.add('hidden');
     return;
   }
-  // Cook mode keyboard nav — only when no text input is focused
+  
   if(!S.cook)return;
   const tag=document.activeElement?.tagName;
   if(tag==='INPUT'||tag==='TEXTAREA')return; // don't hijack typing
@@ -1600,7 +1598,7 @@ function onGlobalKey(e){
   else if(e.key.toLowerCase()==='v')toggleVoice();
 }
 
-/* ═══ MEAL PLANNER ═══ */
+/* MEAL PLANNER */
 const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 function openPlanner(){renderPlannerBody();document.getElementById('planner-modal').classList.remove('hidden');}
 function closePlanner(){document.getElementById('planner-modal').classList.add('hidden');S.activePicker=null;}
@@ -1649,7 +1647,7 @@ function renderPlanMini(){
   }).join('');
 }
 
-/* ═══ SHOPPING LIST ═══ */
+/* SHOPPING LIST */
 function generateShoppingList(){closePlanner();showShoppingList();}
 function showShoppingList(){
   const planned=DAYS.filter(d=>S.plan[d]).map(d=>getRecipe(S.plan[d])).filter(Boolean);
@@ -1685,7 +1683,7 @@ function showShoppingList(){
   modal.classList.remove('hidden');
 }
 
-/* ═══ PRINT — separate recipe vs shopping list ═══ */
+/* PRINT */
 function printRecipe(id,servings){
   const r=getRecipe(id);if(!r)return;
   const s=servings||r.baseServings;const mult=s/r.baseServings;
@@ -1703,13 +1701,13 @@ function printRecipe(id,servings){
 }
 
 function printShoppingList(){
-  // Build plain print-friendly version, NOT using print-area (avoids recipe conflict)
+  
   const planned=DAYS.filter(d=>S.plan[d]).map(d=>getRecipe(S.plan[d])).filter(Boolean);
   if(!planned.length){toast('No meals in your plan to print!');return;}
   const agg={};
   planned.forEach(r=>{
     r.ingredients.forEach(([q,u,n])=>{
-      // Key on BOTH name and unit so "200g butter" and "2 tbsp butter" stay as separate lines
+      
       const key=`${n.toLowerCase()}||${u||''}`;
       if(!agg[key])agg[key]={q:0,u,n,cat:getCategory(n)};
       agg[key].q+=q;
@@ -1728,7 +1726,7 @@ function printShoppingList(){
   window.print();
 }
 
-/* ═══ QUICK FIXES & TIPS — only add bot bubble, no user bubble ═══ */
+/* QUICK FIXES & TIPS */
 function showFix(key){
   const fix=QUICK_FIXES[key];if(!fix)return;
   addUserBubble(fix.title);
@@ -1745,7 +1743,7 @@ function showTip(key){
   html+=`</div>`;
   addBotBubble(html);
 }
-// Called from recipe card quick replies — bot reply only, no user bubble
+
 function sendBotOnly(key){
   if(key==='substitutes'){
     const tip=KITCHEN_TIPS.substitutes;
@@ -1765,7 +1763,7 @@ function sendBotOnly(key){
   }
 }
 
-/* ═══ RULE-BASED CHAT ENGINE ═══ */
+/*  RULE-BASED CHAT ENGINE  */
 function processMessage(msg){
   const low=msg.toLowerCase();
   if(/^(hi|hello|hey|good\s?(morning|evening|night)|howdy|yo|sup)\b/.test(low))
@@ -1774,14 +1772,14 @@ function processMessage(msg){
     return{type:'simple',text:'Happy to help! That\'s what kitchens are for. 🍳 Anything else I can help you cook?'};
   if(/stor|leftover|keep|fridge|freeze/.test(low))
     return{type:'botonly',key:'storage'};
-  // FIX: substitution query — return data, don't call showTip (which adds its own user bubble)
+  
   if(/substitut|instead of|replace|don.t have|out of|alternative/.test(low))
     return{type:'tip',key:'substitutes'};
-  // Named recipe
+  
   for(const r of RECIPES)if(low.includes(r.name.toLowerCase()))return{type:'recipe',id:r.id};
   const nameMatch=RECIPES.find(r=>r.name.toLowerCase().split(' ').some(w=>w.length>3&&low.includes(w)));
   if(nameMatch&&/recipe|make|cook|how|show/.test(low))return{type:'recipe',id:nameMatch.id};
-  // Keyword
+  
   for(const entry of KEYWORD_MAP){
     if(entry.kw.some(k=>low.includes(k))){
       if(entry.sr)return{type:'simple',text:entry.sr};
@@ -1826,13 +1824,13 @@ function renderResponse(result){
   }
 }
 
-/* ═══ MESSAGE RENDERING ═══ */
+/* MESSAGE RENDERING */
 function addUserBubble(text){
   document.getElementById('empty-state')?.remove();
   const msgs=document.getElementById('messages');
   const d=document.createElement('div');
   d.className='msg u';
-  // escHtml prevents XSS from user-typed input
+  
   d.innerHTML=`<div class="m-av usr">👤</div><div class="bubble usr">${escHtml(text)}</div>`;
   msgs.appendChild(d);scrollBottom();
 }
@@ -1843,7 +1841,7 @@ function addBotBubble(html){
   d.className='msg';
   d.innerHTML=`<div class="m-av bot">🍳</div><div class="bubble bot">${html}</div>`;
   msgs.appendChild(d);
-  // Trim oldest messages beyond 120 to prevent DOM bloat in long sessions
+  
   while(msgs.children.length>120)msgs.removeChild(msgs.firstChild);
   scrollBottom();
 }
@@ -1854,7 +1852,7 @@ function scrollBottom(){
   });
 }
 
-/* ═══ SEND FLOW ═══ */
+/* SEND FLOW  */
 function sendUserMsg(text){
   addUserBubble(text);
   renderResponse(processMessage(text));
@@ -1867,10 +1865,9 @@ function handleSend(){
 }
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,88)+'px';}
-/* ═══ MOBILE BOTTOM NAV ═══ */
+/* MOBILE BOTTOM NAV */
 function mobNav(tab){
-  // Chat tab: switch to chat mode
-  // Fridge tab: switch to pantry mode
+  
   ['chat','fridge','fixes','plan','saved'].forEach(t=>{
     const el=document.getElementById('mn-'+t);
     if(el)el.classList.toggle('active',t===tab);
